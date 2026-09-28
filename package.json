@@ -8,7 +8,7 @@
     "start": "node server/server.js",
     "reset": "node server/server.js --reset-only",
     "icons": "node tools/make-icons.js",
-    "tunnel": "ngrok http 4321",
+    "tunnel": "ngrok http 4321 --url=https://kandis-nondenunciating-uncleanly.ngrok-free.dev",
     "set-api": "node tools/set-api.js"
   },
   "engines": {

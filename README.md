@@ -32,21 +32,22 @@ npm start          # сервер: http://localhost:4321 (сайт открыв�
 npm run tunnel     # в другом окне: HTTPS-туннель к серверу
 ```
 
-### Постоянный адрес туннеля (один раз)
-Бесплатный ngrok даёт **один постоянный домен** на аккаунт: dashboard.ngrok.com → Domains → «Create domain».
-Дальше запускайте туннель с ним и пропишите его сайту:
-```bash
-ngrok http 4321 --url=https://ВАШ-ДОМЕН.ngrok-free.app
-npm run set-api -- https://ВАШ-ДОМЕН.ngrok-free.app   # записывает адрес в docs/shared/config.js
-git commit -am "Адрес сервера демо" && git push
-```
+### Адрес сервера демо
+Постоянный адрес туннеля: `https://kandis-nondenunciating-uncleanly.ngrok-free.dev` — уже прописан в `docs/shared/config.js` и в `npm run tunnel`.
+Если понадобится другой домен: `npm run set-api -- https://НОВЫЙ-ДОМЕН`, поправить скрипт `tunnel` в package.json и отправить в git.
 
 ### GitHub Pages
-Settings → Pages → Source: «Deploy from a branch» → Branch: `main`, папка `/docs`.
-Сайт: `https://bogdalleksss.github.io/maslozvddemo/`
+Pages публикует корень ветки `main`; `index.html` в корне перекидывает в `docs/`.
+Сайт: **https://bogdalleksss.github.io/maslozvddemo/**
+
+| Приложение | Адрес |
+|---|---|
+| Рабочее место | https://bogdalleksss.github.io/maslozvddemo/docs/desk/ |
+| Руководитель | https://bogdalleksss.github.io/maslozvddemo/docs/owner/ |
+| Водитель | https://bogdalleksss.github.io/maslozvddemo/docs/driver/ |
 
 ## Уведомления на iPhone
-1. Откройте в Safari `…/maslozvddemo/owner/` или `…/driver/` (iOS 16.4+).
+1. Откройте в Safari адрес руководителя или водителя из таблицы выше (iOS 16.4+).
 2. «Поделиться» → «На экран Домой».
 3. Откройте приложение **с иконки**, войдите, нажмите «Включить уведомления».
 
