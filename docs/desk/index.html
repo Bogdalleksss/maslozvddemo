@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.ngrok-free.app https://*.ngrok-free.dev https://*.ngrok.app https://*.ngrok.io; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="theme-color" content="#F0F3EE">
+<title>Приёмка · Рабочее место</title>
+<link rel="icon" href="../icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<script src="../shared/theme-init.js"></script>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.shell{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+.side{background:var(--dark);color:var(--dark-ink);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:28px;padding:24px 16px}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px}
+.brand b{font-size:16px;font-weight:700}
+.brand .theme{margin-left:auto;background:var(--dark-2);border-color:var(--dark-2);color:var(--dark-muted)}
+.brand .theme:hover{color:var(--dark-ink);border-color:var(--dark-muted)}
+.base-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:640px){.base-form{grid-template-columns:1fr}}
+.plant{padding:0 10px 20px;border-bottom:1px solid var(--dark-2);display:grid;gap:1px}
+.plant b{font-size:13.5px;font-weight:600}
+.plant span{font-size:12px;color:var(--dark-muted)}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{border:0;background:none;color:var(--dark-ink);opacity:.78;text-align:left;padding:11px 12px;border-radius:12px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;white-space:nowrap}
+.nav button svg{width:19px;height:19px;flex:none}
+.nav button:hover{background:var(--dark-2);opacity:1}
+.nav button[aria-current="page"]{background:var(--dark-2);opacity:1}
+.nav button[aria-current="page"] svg{color:var(--accent)}
+.nav .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:700;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 7px}
+.side-foot{margin-top:auto;border-top:1px solid var(--dark-2);padding:18px 10px 4px;display:grid;gap:8px;font-size:12px;color:var(--dark-muted)}
+.side-foot .clock{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--dark-ink)}
+.side-foot .conn{color:var(--dark-muted)}
+.content{min-width:0}
+.side-user{border-top:1px solid var(--dark-2);margin-top:10px;padding-top:14px}
+.side-user .user-chip b{display:block;color:var(--dark-ink);font-size:13.5px}
+.side-user .user-chip span{font-size:12px;color:var(--dark-muted)}
+.side-user .avatar{background:var(--dark-2);color:var(--dark-ink)}
+.side-user .out{margin-left:auto;background:var(--dark-2);border-color:var(--dark-2);color:var(--dark-muted)}
+.side-user .out:hover{color:var(--dark-ink)}
+.role-select{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 10px;font-size:13.5px}
+td .user-chip b{font-weight:600}
+.row-actions{display:inline-flex;gap:8px;justify-content:flex-end}
+.new-user{display:grid;grid-template-columns:2fr 1.4fr 1.2fr auto;gap:14px;align-items:end}
+@media (max-width:900px){.new-user{grid-template-columns:1fr}}
+.wrap{max-width:1400px;margin:0 auto;padding:40px 40px 72px;display:grid;gap:32px}
+.wrap > *{min-width:0}
+.head{display:flex;align-items:flex-end;gap:12px 16px;flex-wrap:wrap}
+.head h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:0}
+.head p{margin:6px 0 0;color:var(--muted)}
+.head .actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.cols{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
+.panel h2{font-size:14.5px;font-weight:600;margin:0 0 18px;display:flex;gap:8px;align-items:center}
+.panel h2 .muted{font-weight:400;font-size:12.5px;margin-left:auto}
+
+/* канбан-доска */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(252px,1fr);gap:16px;align-items:start;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.board .col{scroll-snap-align:start}
+.col{background:var(--fill);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:12px;min-height:200px}
+.col-head{display:flex;align-items:flex-start;gap:8px;font-weight:600;font-size:13px;padding:2px 4px 6px;line-height:1.3}
+.col-head .dot{margin-top:4px}
+.col-head .c{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.card.open{cursor:pointer}
+.card.open:hover{border-color:var(--faint)}
+.card .top{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.card .sup{font-size:13px;font-weight:500}
+.card .meta{font-size:12px;color:var(--muted)}
+.card .meta b{color:var(--ink);font-family:var(--mono)}
+.card .btn{width:100%}
+.col .empty{font-size:12.5px;color:var(--faint);padding:6px 4px}
+.col .more{font-size:12.5px;color:var(--muted);text-align:center;padding:4px;border:0;background:none;text-decoration:underline;text-underline-offset:3px}
+
+/* таблицы */
+.table{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:14px 18px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--fill)}
+td{padding:14px 18px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.m{font-family:var(--mono);font-size:13px}
+tr:last-child td{border-bottom:0}
+tbody tr.tap{cursor:pointer}
+tbody tr.tap:hover td{background:var(--fill)}
+.r{text-align:right}
+.empty{padding:14px;color:var(--muted);font-size:13.5px}
+.cult-unused{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;display:grid;gap:10px}
+.cult h3{margin:0;font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-size:13.5px}
+.kv span:nth-child(odd){color:var(--muted)}
+.kv b{font-family:var(--mono)}
+.prose{max-width:72ch;color:var(--muted);margin:0}
+
+/* карточка рейса */
+.scrim{position:fixed;inset:0;background:rgba(8,12,10,.4);z-index:40;display:flex;justify-content:flex-end}
+.sheet{background:var(--bg);width:min(500px,100%);height:100%;overflow-y:auto;box-shadow:-12px 0 40px rgba(0,0,0,.2);display:flex;flex-direction:column}
+.sheet-head{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:22px 26px;display:grid;gap:12px;z-index:1}
+.sheet-head .top{display:flex;align-items:center;gap:10px}
+.sheet-head .top .btn{margin-left:auto}
+.sheet-head .sub{color:var(--muted);font-size:13.5px}
+.sheet-body{padding:26px 26px 32px;display:grid;gap:26px}
+.scale{display:flex;align-items:center;gap:12px;padding:16px 20px}
+.scale .lbl{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--dark-muted)}
+.scale .v{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--accent);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.scale .v small{font-size:13px;color:var(--dark-muted);margin-left:4px}
+.scale .v.pending{color:var(--dark-muted)}
+.scale .v-input{display:flex;align-items:baseline;gap:4px}
+.scale input.v{background:transparent;border:0;border-bottom:2px solid var(--dark-2);border-radius:0;padding:2px 0;width:100%;max-width:190px;color:var(--accent)}
+.scale input.v::placeholder{color:var(--dark-muted)}
+.scale input.v:focus{outline:none;border-bottom-color:var(--accent)}
+.scale .v-input small{font-family:var(--mono);font-size:13px;color:var(--dark-muted)}
+.scale .end{margin-left:auto}
+.scale .ok{color:var(--ok);font-size:13px;font-weight:600}
+.fields3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:18px}
+.calc{background:var(--accent-soft);border-radius:var(--radius);padding:20px 22px;display:grid;gap:10px}
+.calc .line{display:flex;justify-content:space-between;font-size:13.5px}
+.calc .line span:first-child{color:var(--muted)}
+.calc .line b{font-family:var(--mono);font-weight:600}
+.calc .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--faint);padding-top:9px;margin-top:3px}
+.calc .total b{font-family:var(--mono);font-size:24px;font-weight:600}
+.note{font-size:12px;color:var(--muted);margin:0}
+.locked{opacity:.4;pointer-events:none}
+
+@media (max-width:1150px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .side{position:sticky;top:0;height:auto;z-index:10;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 16px}
+  .plant{display:none}
+  .nav{flex-direction:row;overflow-x:auto;order:3;width:100%}
+  .side-foot{margin:0 0 0 auto;border:0;padding:0;display:flex;align-items:center;gap:12px}
+  .side-foot .clock{font-size:15px}.side-foot .hide-sm{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:28px 20px 56px;gap:26px}
+  .head h1{font-size:23px}.fields3{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side">
+  <div class="brand"><span class="mark" id="mark"></span><b>Приёмка</b><button class="icon-btn theme" data-theme-toggle type="button"></button></div>
+  <div class="plant"><b>Маслозавод «Пример»</b><span>Весовая №1 · смена А</span></div>
+  <nav class="nav" id="nav" aria-label="Разделы"></nav>
+  <div class="side-foot">
+    <span class="clock" id="clock">—</span>
+    <span class="conn" id="conn"><span class="dot"></span>подключение</span>
+    <span class="hide-sm"><span class="dot ok"></span>весы на связи</span>
+    <span class="hide-sm">обмен с 1С: 13:30</span>
+    <div class="side-user" id="user"></div>
+  </div>
+</aside>
+<div class="content"><main class="wrap" id="page"></main></div>
+</div>
+<div id="sheet"></div>
+<script src="../shared/config.js"></script>
+<script src="../shared/core.js"></script>
+<script src="desk.js"></script>
+</body>
+</html>

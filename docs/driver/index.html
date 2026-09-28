@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.ngrok-free.app https://*.ngrok-free.dev https://*.ngrok.app https://*.ngrok.io; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="theme-color" content="#F0F3EE">
+<title>Приёмка · Водитель</title>
+<link rel="icon" href="../icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Водитель">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script src="../shared/theme-init.js"></script>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.hero{background:var(--dark);color:var(--dark-ink);border:1px solid var(--line);border-radius:22px;padding:26px 24px;display:grid;gap:10px}
+.hero .cap{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--dark-muted);font-weight:600}
+.hero .big{font-family:var(--mono);font-size:58px;font-weight:600;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.hero .big small{font-size:18px;color:var(--dark-muted);margin-left:4px}
+.hero h2{font-size:21px;font-weight:600;margin:2px 0 0;letter-spacing:-.01em;text-wrap:balance}
+.hero p{margin:4px 0 0;color:var(--dark-muted);font-size:14px;text-wrap:balance}
+.steps{padding:8px 0}
+.step{display:flex;align-items:center;gap:14px;padding:12px 18px;color:var(--faint)}
+.step .c{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--surface)}
+.step.done{color:var(--ink)}
+.step.done .c{background:var(--ok);border-color:var(--ok)}
+.step.done .c::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.step.cur{color:var(--ink);font-weight:600}
+.step.cur .c{border-color:var(--accent);background:var(--accent-soft)}
+.step.cur .c::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.slot{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 6px;display:grid;gap:2px;justify-items:center}
+.slot b{font-family:var(--mono);font-size:16px;font-weight:600}
+.slot span{font-size:11.5px;color:var(--muted)}
+.slot.busy span{color:var(--warn)}
+.slot[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.slot[disabled]{opacity:.35;cursor:default}
+.form{padding:20px;display:grid;gap:16px}
+.two{display:grid;grid-template-columns:1fr 96px;gap:12px}
+.switch{display:flex;justify-content:center}
+.res .row .end{font-family:var(--mono)}
+.res .row.total{background:var(--accent-soft)}
+.res .row.total .end{font-weight:600;font-size:16px}
+</style>
+</head>
+<body>
+<div class="m-wrap">
+  <div class="m-top"><span class="who"><span class="mark" id="mark"></span>Маслозавод «Пример»</span><span style="display:flex;align-items:center;gap:10px"><span class="conn" id="conn"><span class="dot"></span></span><button class="icon-btn" data-theme-toggle type="button"></button><button class="icon-btn" id="out" type="button" aria-label="Выйти" title="Выйти"></button></span></div>
+  <div id="view"></div>
+  <div id="push-box" class="push-box"></div>
+</div>
+<nav class="tabbar" aria-label="Разделы"><div class="tabbar-in" id="tabs"></div></nav>
+<script src="../shared/config.js"></script>
+<script src="../shared/core.js"></script>
+<script src="../shared/push-client.js"></script>
+<script src="driver.js"></script>
+</body>
+</html>

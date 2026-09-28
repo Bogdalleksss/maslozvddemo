@@ -1,0 +1,720 @@
+<title>Приёмка семечки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#EDF0EA; --surface:#FFFFFF; --surface-2:#F5F7F2; --line:#DAE0D7; --ink:#17201B; --muted:#5C6861; --faint:#89938C;
+  --side:#15201B; --side-2:#1E2B25; --side-ink:#DDE6DF; --side-muted:#8E9F95;
+  --accent:#E3A008; --accent-ink:#2A1F00; --accent-soft:#FBF0CF;
+  --ok:#2E7D4F; --ok-soft:#E0F0E5; --warn:#A96400; --warn-soft:#FBEBD1; --crit:#B3392D; --crit-soft:#F8E0DC; --info:#2F5E8C; --info-soft:#E0EAF4;
+  --plate-bg:#FFFFFF; --plate-ink:#111111;
+  --shadow:0 1px 2px rgba(20,30,25,.06),0 8px 24px rgba(20,30,25,.06);
+  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-disp:"Unbounded","Onest",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0D1310; --surface:#151D19; --surface-2:#1B2520; --line:#29342E; --ink:#E5EBE6; --muted:#A0ACA4; --faint:#748079;
+    --side:#090E0C; --side-2:#131C18; --side-ink:#DDE6DF; --side-muted:#7F9087;
+    --accent:#F0B429; --accent-ink:#231900; --accent-soft:#3A2E0C;
+    --ok:#5DB985; --ok-soft:#163224; --warn:#E3A447; --warn-soft:#382810; --crit:#E57C71; --crit-soft:#3A1C19; --info:#80AEDB; --info-soft:#162838;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0D1310; --surface:#151D19; --surface-2:#1B2520; --line:#29342E; --ink:#E5EBE6; --muted:#A0ACA4; --faint:#748079;
+  --side:#090E0C; --side-2:#131C18; --side-ink:#DDE6DF; --side-muted:#7F9087;
+  --accent:#F0B429; --accent-ink:#231900; --accent-soft:#3A2E0C;
+  --ok:#5DB985; --ok-soft:#163224; --warn:#E3A447; --warn-soft:#382810; --crit:#E57C71; --crit-soft:#3A1C19; --info:#80AEDB; --info-soft:#162838;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:14px 40px}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* top bar */
+.topbar{max-width:1320px;margin-inline:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--accent);display:grid;place-items:center}
+.brand-mark svg{width:18px;height:18px}
+.brand-name{font-family:var(--f-disp);font-weight:600;font-size:15px;letter-spacing:.01em}
+.demo-badge{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);border-radius:999px;padding:3px 9px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin-left:auto}
+.seg button{border:0;background:transparent;padding:8px 12px;border-radius:9px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:7px}
+.seg button svg{width:16px;height:16px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.hint{max-width:1320px;margin:0 auto 14px;font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.hint b{color:var(--ink);font-weight:600}
+
+/* desktop app */
+.app{max-width:1320px;margin-inline:auto;display:grid;grid-template-columns:224px 1fr;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);min-height:720px}
+.side{background:var(--side);color:var(--side-ink);padding:18px 12px;display:flex;flex-direction:column;gap:18px}
+.side-plant{padding:4px 10px 12px;border-bottom:1px solid var(--side-2)}
+.side-plant b{display:block;font-size:14px}
+.side-plant span{font-size:12px;color:var(--side-muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{border:0;background:transparent;color:var(--side-ink);text-align:left;padding:9px 10px;border-radius:9px;display:flex;align-items:center;gap:10px;font-weight:500;opacity:.82}
+.nav button svg{width:17px;height:17px;flex:none}
+.nav button:hover{background:var(--side-2);opacity:1}
+.nav button[aria-current="page"]{background:var(--side-2);opacity:1;box-shadow:inset 3px 0 0 var(--accent)}
+.nav .count{margin-left:auto;font-size:11px;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 7px;font-weight:600}
+.side-foot{margin-top:auto;font-size:12px;color:var(--side-muted);padding:10px;border-top:1px solid var(--side-2);display:grid;gap:4px}
+.side-foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px}
+.main{padding:22px 26px 30px;min-width:0;display:flex;flex-direction:column;gap:20px;background:var(--surface-2)}
+.page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 16px}
+.page-head h1{font-size:22px;margin:0;font-weight:700;text-wrap:balance}
+.page-head .sub{color:var(--muted);font-size:13px}
+.page-head .actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;font-size:13px}
+.btn:hover{border-color:var(--faint)}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.04);border-color:var(--accent)}
+.btn-dark{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.panel h2{font-size:14px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;gap:8px}
+.panel h2 .muted{font-weight:400;color:var(--muted);font-size:12px;margin-left:auto}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.kpi .label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+.kpi .value{font-family:var(--f-disp);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi .value small{font-family:var(--f-ui);font-size:13px;color:var(--muted);font-weight:500;margin-left:4px}
+.kpi .foot{font-size:12px;color:var(--muted)}
+.kpi.hl{background:var(--accent-soft);border-color:transparent}
+.grid-2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+.pill.info{background:var(--info-soft);color:var(--info)}
+.pill.neutral{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.alerts{display:grid;gap:8px}
+.alert{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line)}
+.alert .ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+.alert .ic svg{width:16px;height:16px}
+.alert.crit .ic{background:var(--crit-soft);color:var(--crit)}
+.alert.warn .ic{background:var(--warn-soft);color:var(--warn)}
+.alert.info .ic{background:var(--info-soft);color:var(--info)}
+.alert b{font-weight:600}
+.alert .t{font-size:13px}
+.alert .s{font-size:12px;color:var(--muted)}
+
+/* chart */
+.chart svg{width:100%;height:auto;display:block}
+.chart .axis{fill:var(--muted);font-size:10.5px;font-family:var(--f-ui)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .bar{fill:var(--accent)}
+.chart .bar.now{fill:var(--ink)}
+.chart .val{fill:var(--ink);font-size:10.5px;font-weight:600;font-family:var(--f-ui)}
+
+/* plate */
+.plate{display:inline-flex;align-items:stretch;border:1.5px solid var(--plate-ink);border-radius:5px;background:var(--plate-bg);color:var(--plate-ink);font-family:var(--f-mono);font-weight:600;font-size:12.5px;line-height:1;white-space:nowrap;overflow:hidden}
+.plate .n{padding:4px 6px 4px 7px;letter-spacing:.04em}
+.plate .r{padding:2px 5px;border-left:1.5px solid var(--plate-ink);font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.plate .r i{font-style:normal;font-size:6.5px;letter-spacing:.05em}
+.plate.lg{font-size:17px}
+.plate.lg .r{font-size:12px}
+.plate.lg .r i{font-size:7.5px}
+
+/* queue board */
+.board{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:12px;align-items:start}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:160px}
+.col-head{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+.col-head .c{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500}
+.col-head .sw{width:8px;height:8px;border-radius:50%}
+.card{border:1px solid var(--line);background:var(--surface-2);border-radius:11px;padding:10px;display:grid;gap:8px}
+.card.clickable{cursor:pointer}
+.card.clickable:hover{border-color:var(--faint)}
+.card .row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.card .sup{font-size:12.5px;font-weight:500}
+.card .meta{font-size:12px;color:var(--muted)}
+.card.me{box-shadow:0 0 0 2px var(--accent)}
+.empty{font-size:12.5px;color:var(--faint);padding:8px 2px}
+
+/* table */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface-2)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right}
+tbody tr:hover td{background:var(--surface-2)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:500;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,15,12,.38);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,100%);background:var(--surface);z-index:41;box-shadow:-10px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.drawer-head{padding:18px 20px 14px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.drawer-head .top{display:flex;align-items:center;gap:10px}
+.drawer-head .close{margin-left:auto;border:0;background:var(--surface-2);width:32px;height:32px;border-radius:9px;display:grid;place-items:center}
+.drawer-head .close svg{width:16px;height:16px}
+.drawer-body{padding:16px 20px 24px;overflow-y:auto;display:grid;gap:14px;align-content:start}
+.step{border:1px solid var(--line);border-radius:13px;padding:13px 14px;display:grid;gap:10px}
+.step.done{background:var(--surface-2)}
+.step.locked{opacity:.5}
+.step-h{display:flex;align-items:center;gap:10px;font-weight:600}
+.step-h .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--surface-2);border:1px solid var(--line)}
+.step.done .step-h .n{background:var(--ok);color:#fff;border-color:var(--ok)}
+.step-h .right{margin-left:auto}
+.scale{display:flex;align-items:center;gap:12px;justify-content:space-between;background:var(--side);color:var(--side-ink);border-radius:11px;padding:10px 14px}
+.scale .disp{font-family:var(--f-mono);font-size:26px;font-weight:600;letter-spacing:.02em;color:var(--accent)}
+.scale .disp small{font-size:13px;color:var(--side-muted);margin-left:4px}
+.scale .lbl{font-size:11px;color:var(--side-muted);text-transform:uppercase;letter-spacing:.07em}
+.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.field{display:grid;gap:4px}
+.field label{font-size:11.5px;color:var(--muted);font-weight:500}
+.field input,.field select{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 10px;font-family:var(--f-mono);font-size:14px;width:100%}
+.field input:focus{border-color:var(--accent);outline:none}
+.calc{background:var(--accent-soft);border-radius:13px;padding:14px;display:grid;gap:8px}
+.calc .line{display:flex;justify-content:space-between;font-size:13px}
+.calc .line span:first-child{color:var(--muted)}
+.calc .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--faint);padding-top:8px;margin-top:2px}
+.calc .total b{font-family:var(--f-disp);font-size:22px;font-weight:600}
+.calc .formula{font-size:11.5px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+.kv span:nth-child(odd){color:var(--muted)}
+
+/* phone */
+.phone-stage{max-width:1320px;margin-inline:auto;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;align-items:flex-start}
+.phone{width:390px;max-width:100%;height:790px;border-radius:46px;background:var(--side);padding:10px;box-shadow:var(--shadow),0 30px 60px rgba(0,0,0,.18)}
+.phone-screen{height:100%;border-radius:37px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 26px 6px;font-size:13px;font-weight:600}
+.sbar .isl{width:96px;height:26px;background:var(--side);border-radius:20px}
+.sbar .icons{display:flex;gap:5px;align-items:center}
+.sbar .icons svg{width:15px;height:15px}
+.p-body{flex:1;overflow-y:auto;padding:6px 16px 16px;display:grid;gap:12px;align-content:start}
+.p-head{display:flex;align-items:center;gap:10px;padding:4px 2px}
+.p-head h1{font-size:20px;margin:0;font-weight:700}
+.p-head .sub{font-size:12px;color:var(--muted)}
+.p-head .av{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--accent-soft);color:var(--ink);display:grid;place-items:center;font-weight:700;font-size:13px}
+.tabbar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:var(--surface);padding:8px 8px 18px}
+.tabbar.two{grid-template-columns:repeat(2,1fr)}
+.tabbar button{border:0;background:transparent;display:grid;justify-items:center;gap:3px;font-size:11px;font-weight:500;color:var(--faint);padding:4px}
+.tabbar button svg{width:22px;height:22px}
+.tabbar button[aria-current="page"]{color:var(--ink)}
+.tabbar button[aria-current="page"] svg{color:var(--accent)}
+.p-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px}
+.p-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.p-kpis .kpi{border-radius:16px;padding:12px}
+.p-kpis .kpi .value{font-size:20px}
+.list{display:grid}
+.list .it{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list .it:last-child{border-bottom:0}
+.list .it .grow{flex:1;min-width:0}
+.list .it .grow b{display:block;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list .it .grow span{font-size:12px;color:var(--muted)}
+.hero-status{border-radius:20px;padding:18px;display:grid;gap:12px;background:var(--side);color:var(--side-ink)}
+.hero-status .big{font-family:var(--f-disp);font-size:44px;font-weight:600;line-height:1;color:var(--accent)}
+.hero-status .cap{font-size:13px;color:var(--side-muted)}
+.hero-status h2{margin:0;font-size:19px;font-weight:600;color:var(--side-ink);text-wrap:balance}
+.timeline{display:grid;gap:0}
+.tl{display:grid;grid-template-columns:22px 1fr;gap:10px;position:relative;padding-bottom:12px}
+.tl:last-child{padding-bottom:0}
+.tl .d{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);background:var(--surface);margin-top:2px;justify-self:center;position:relative;z-index:1}
+.tl:not(:last-child)::before{content:"";position:absolute;left:10px;top:16px;bottom:0;width:2px;background:var(--line)}
+.tl.done .d{background:var(--ok);border-color:var(--ok)}
+.tl.done:not(:last-child)::before{background:var(--ok)}
+.tl.cur .d{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.tl b{font-size:13.5px;font-weight:600;display:block}
+.tl span{font-size:12px;color:var(--muted)}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 6px;display:grid;gap:2px;justify-items:center}
+.slot b{font-size:14px;font-family:var(--f-mono)}
+.slot span{font-size:10.5px;color:var(--muted)}
+.slot.full{opacity:.4;cursor:not-allowed}
+.slot[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.slot.busy span{color:var(--warn)}
+.p-field{display:grid;gap:5px}
+.p-field label{font-size:12px;color:var(--muted);font-weight:500}
+.p-field input,.p-field select{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 12px;font-size:15px;width:100%}
+.p-btn{border:0;border-radius:14px;padding:14px;font-weight:700;font-size:15px;background:var(--accent);color:var(--accent-ink);width:100%}
+.p-btn.ghost{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.side-note{max-width:320px;display:grid;gap:12px;align-content:start;padding-top:20px}
+.side-note h3{margin:0;font-size:16px}
+.side-note p{margin:0;color:var(--muted);font-size:13.5px}
+.side-note ol{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;display:grid;gap:6px}
+.side-note ol b{color:var(--ink)}
+
+/* toasts */
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:60;width:min(460px,calc(100% - 32px))}
+.toast{background:var(--ink);color:var(--bg);border-radius:12px;padding:11px 14px;font-size:13px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:tin .25s ease-out}
+.toast svg{width:17px;height:17px;flex:none;color:var(--accent);margin-top:1px}
+@keyframes tin{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion: reduce){.toast{animation:none}}
+
+.settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cult{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface);display:grid;gap:10px}
+.cult h3{margin:0;font-size:15px;display:flex;align-items:center;gap:8px}
+.cult .season{font-size:12px;color:var(--muted)}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-2{grid-template-columns:1fr}
+  .board{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .settings-grid{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{padding:12px;gap:10px}
+  .side-plant,.side-foot{display:none}
+  .nav{flex-direction:row;overflow-x:auto}
+  .nav button{white-space:nowrap}
+  .nav button[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--accent)}
+  .main{padding:16px}
+  .seg{margin-left:0;width:100%}
+  .seg button{flex:1;justify-content:center;padding:8px 6px;font-size:12.5px}
+  .fields{grid-template-columns:1fr 1fr}
+}
+@media (max-width:460px){
+  body{padding-inline:0}
+  .topbar,.hint{padding-inline:16px}
+  .phone{width:100%;height:auto;min-height:720px;border-radius:0;padding:0;box-shadow:none;background:transparent}
+  .phone-screen{border-radius:0;min-height:720px}
+  .app{border-radius:0;border-inline:0}
+  .kpis{grid-template-columns:1fr 1fr}
+  .side-note{padding-inline:16px}
+}
+</style>
+
+<div id="app"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+const I = {
+  seed:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.5 3 5 6 5 9.5A5 5 0 0 1 12 18a5 5 0 0 1-5-5.5C7 9 8.5 6 12 3z"/><path d="M12 18v3"/></svg>',
+  desk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg>',
+  truck:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.3-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.8 3.1 2.6 3.5 5.2"/></svg>',
+  sliders:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  drop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5M4 15v5h16v-5"/></svg>',
+  scale:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h20M4 17l1.5-6h13L20 17"/><path d="M12 11V6M9 6h6"/></svg>',
+  signal:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="14" width="3" height="6" rx="1"/><rect x="8.5" y="10" width="3" height="10" rx="1"/><rect x="14" y="6" width="3" height="14" rx="1"/><rect x="19.5" y="3" width="1.5" height="17" rx=".7" opacity=".35"/></svg>',
+  batt:'<svg viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="7" width="20" height="10" rx="3"/><rect x="3.5" y="9" width="14" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M24 10.5v3"/></svg>'
+};
+
+const SUP = ['КФХ «Рассвет»','СПК «Заря»','ООО «Степь-Агро»','КФХ «Подсолнух»','ООО «Зелёный клин»'];
+const SEASON_BEFORE = {'КФХ «Рассвет»':[38,871.4],'СПК «Заря»':[41,934.2],'ООО «Степь-Агро»':[29,688.9],'КФХ «Подсолнух»':[24,547.3],'ООО «Зелёный клин»':[33,742.8]};
+const CULT = {
+  sun:{name:'Подсолнечник',season:'сентябрь – ноябрь',wb:7,sb:1,extra:'Масличность',active:true},
+  wheat:{name:'Пшеница 4 класса',season:'июль – август',wb:14,sb:1,extra:'Клейковина',active:false},
+  corn:{name:'Кукуруза',season:'сентябрь – ноябрь',wb:14,sb:1,extra:'Зерновая примесь',active:false}
+};
+const t = (h,m)=>h*60+m;
+let seq = 100;
+function trip(o){return Object.assign({id:++seq,culture:'sun',gross:null,tare:null,w:null,s:null,oil:null,arrivedAt:null,slot:null,finishedAt:null,sdiz:'pending',sdizNo:String(4700+seq*7).slice(-4)},o)}
+const doneSeed = [
+  ['А318КЕ','93',0,t(6,40),38.4,14.9,7.8,1.6,49.2,55],
+  ['В772ОР','123',1,t(7,5),41.2,15.6,8.9,2.1,48.1,62],
+  ['Е105ТН','23',2,t(7,35),36.9,14.2,6.9,1.1,50.4,48],
+  ['М640АВ','93',3,t(8,10),39.8,15.1,9.6,2.8,47.5,71],
+  ['Н219СХ','93',0,t(8,50),37.5,14.8,7.2,1.3,49.8,58],
+  ['О553КМ','123',4,t(9,20),42.0,15.9,10.4,3.3,46.9,84],
+  ['Р087ЕУ','23',1,t(9,55),38.1,14.6,8.1,1.9,48.6,66],
+  ['С902ВТ','93',2,t(10,40),40.3,15.3,7.5,1.2,50.1,73],
+  ['Т411НА','93',3,t(11,15),36.2,14.0,8.7,2.4,48.0,79],
+  ['У736РС','123',0,t(11,50),39.4,15.2,7.0,1.0,50.6,61],
+  ['Х158МО','23',4,t(12,30),41.5,15.7,9.9,3.0,47.2,92],
+  ['А694ТК','93',1,t(13,10),37.8,14.7,8.4,2.0,48.9,88],
+  ['В247СН','93',2,t(13,50),39.0,15.0,7.6,1.4,49.7,95]
+];
+const S = {
+  mode:'desktop', page:'dashboard', ownerTab:'summary', driverTab:'my',
+  now:t(14,20), drawer:null, filter:'all', reading:null,
+  driverId:null,
+  booking:{supplier:SUP[2], plate:'', region:'93', day:0, slot:null},
+  trips:[]
+};
+doneSeed.forEach((d,i)=>{S.trips.push(trip({plate:d[0],region:d[1],supplier:SUP[d[2]],status:'done',finishedAt:d[3],gross:d[4],tare:d[5],w:d[6],s:d[7],oil:d[8],arrivedAt:d[3]-d[9],sdiz: i<10?'redeemed':'pending'}))});
+S.trips.push(trip({plate:'К316АР',region:'123',supplier:SUP[3],status:'unload',arrivedAt:t(11,55),gross:39.2,w:8.2,s:1.7,oil:48.8,_tare:15.1}));
+S.trips.push(trip({plate:'Е830ОК',region:'93',supplier:SUP[1],status:'weigh',arrivedAt:t(12,20),_gross:40.6,_tare:15.4}));
+S.trips.push(trip({plate:'М925ХВ',region:'93',supplier:SUP[0],status:'arrived',arrivedAt:t(12,35),_gross:38.7,_tare:14.8}));
+S.trips.push(trip({plate:'Н471ЕС',region:'23',supplier:SUP[4],status:'arrived',arrivedAt:t(13,10),_gross:41.9,_tare:15.8}));
+const me = trip({plate:'К482МР',region:'93',supplier:SUP[2],status:'arrived',arrivedAt:t(13,40),_gross:39.6,_tare:15.2});
+S.trips.push(me); S.driverId = me.id;
+S.trips.push(trip({plate:'О368ТА',region:'123',supplier:SUP[3],status:'arrived',arrivedAt:t(14,5),_gross:37.4,_tare:14.6}));
+S.trips.push(trip({plate:'Р559УК',region:'93',supplier:SUP[1],status:'booked',slot:t(14,40)}));
+S.trips.push(trip({plate:'С713МН',region:'23',supplier:SUP[0],status:'booked',slot:t(15,20)}));
+S.trips.push(trip({plate:'Т204ОЕ',region:'93',supplier:SUP[4],status:'booked',slot:t(16,0)}));
+
+/* ---------- helpers ---------- */
+const f1 = n => n==null||isNaN(n)?'—':n.toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1});
+const f2 = n => n==null||isNaN(n)?'—':n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
+const hm = m => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+const dur = m => { m=Math.max(0,Math.round(m)); const h=Math.floor(m/60), r=m%60; return h? `${h} ч ${r} мин` : `${r} мин`; };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function plate(tr,lg){
+  const p = tr.plate; const a=p[0], num=p.slice(1,4), b=p.slice(4);
+  return `<span class="plate${lg?' lg':''}" aria-label="Госномер ${esc(p)} ${esc(tr.region)}"><span class="n">${a} ${num} ${b}</span><span class="r">${tr.region}<i>RUS</i></span></span>`;
+}
+function calc(tr){
+  const c = CULT[tr.culture];
+  const netto = (tr.gross!=null && tr.tare!=null) ? tr.gross - tr.tare : null;
+  const s = tr.s, w = tr.w;
+  const sd = s!=null ? Math.max(0,s-c.sb)*100/(100-c.sb) : null;
+  const wd = w!=null ? Math.max(0,w-c.wb)*100/(100-c.wb) : null;
+  const zach = (netto!=null && sd!=null && wd!=null) ? netto*(1-sd/100)*(1-wd/100) : null;
+  return {netto, sd, wd, zach, c};
+}
+const done = () => S.trips.filter(x=>x.status==='done');
+const byStatus = st => S.trips.filter(x=>x.status===st);
+const waiting = () => byStatus('arrived').sort((a,b)=>a.arrivedAt-b.arrivedAt);
+function stats(){
+  const d = done();
+  let netto=0, zach=0, oil=0, stay=0;
+  d.forEach(x=>{const c=calc(x); netto+=c.netto; zach+=c.zach; oil+=x.oil; stay+=x.finishedAt-x.arrivedAt;});
+  const wq = waiting();
+  const longest = wq.length? S.now - wq[0].arrivedAt : 0;
+  return {count:d.length, netto, zach, disc: netto? (netto-zach)/netto*100:0, oil: d.length? oil/d.length:0, stay: d.length? stay/d.length:0,
+    queue:wq.length, longest, inWork: byStatus('weigh').length+byStatus('unload').length, booked: byStatus('booked').length,
+    sdizPending: d.filter(x=>x.sdiz==='pending').length};
+}
+function hourly(){
+  const hours=[]; for(let h=6; h<=14; h++) hours.push({h, v:0});
+  done().forEach(x=>{const h=Math.floor(x.finishedAt/60); const b=hours.find(k=>k.h===h); if(b) b.v+=calc(x).zach;});
+  return hours;
+}
+function alerts(){
+  const out=[];
+  waiting().forEach(x=>{const m=S.now-x.arrivedAt; if(m>=90) out.push({lvl:'crit',icon:I.clock,t:`${x.plate.slice(0,1)} ${x.plate.slice(1,4)} ${x.plate.slice(4)} ${x.region} ждёт на площадке <b>${dur(m)}</b>`,s:`${esc(x.supplier)} · норматив ожидания 90 мин`,act:x.id});});
+  done().forEach(x=>{if(x.w>=10){const c=calc(x); out.push({lvl:'warn',icon:I.drop,t:`Влажная партия: влажность <b>${f1(x.w)}%</b>, скидка ${f1(c.wd)}%`,s:`${esc(x.supplier)} · ${hm(x.finishedAt)} · отправить на сушку`});}});
+  const st=stats(); if(st.sdizPending) out.push({lvl:'info',icon:I.doc,t:`<b>${st.sdizPending}</b> СДИЗ ждут погашения во ФГИС «Зерно»`,s:'Погасить можно из журнала приёмки',go:'journal'});
+  return out;
+}
+
+/* ---------- toasts ---------- */
+function toast(msg){
+  const box=document.getElementById('toasts');
+  const el=document.createElement('div'); el.className='toast'; el.innerHTML=I.bell+'<div>'+msg+'</div>';
+  box.appendChild(el); setTimeout(()=>{el.remove()},4200);
+}
+
+/* ---------- chart ---------- */
+function chart(small){
+  const data=hourly(); const W=small?330:620, H=small?150:220, pl=34, pr=8, pt=18, pb=24;
+  const max=Math.max(60, Math.ceil(Math.max(...data.map(d=>d.v))/20)*20);
+  const bw=(W-pl-pr)/data.length;
+  const y=v=>pt+(H-pt-pb)*(1-v/max);
+  let g='';
+  for(let v=0; v<=max; v+=max/4){ g+=`<line class="grid" x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${pl-6}" y="${y(v)+3.5}" text-anchor="end">${Math.round(v)}</text>`; }
+  data.forEach((d,i)=>{
+    const x=pl+i*bw+bw*0.2, w=bw*0.6, cur=d.h===14;
+    if(d.v>0) g+=`<rect class="bar${cur?' now':''}" x="${x}" y="${y(d.v)}" width="${w}" height="${y(0)-y(d.v)}" rx="3"/>`;
+    if(d.v>0 && !small) g+=`<text class="val" x="${x+w/2}" y="${y(d.v)-5}" text-anchor="middle">${f1(d.v)}</text>`;
+    g+=`<text class="axis" x="${x+w/2}" y="${H-7}" text-anchor="middle">${String(d.h).padStart(2,'0')}</text>`;
+  });
+  return `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Принято зачётного веса по часам, тонн">${g}</svg></div>`;
+}
+
+/* ---------- desktop pages ---------- */
+function kpis(){
+  const st=stats();
+  return `<div class="kpis">
+    <div class="kpi hl"><span class="label">Принято сегодня · зачёт</span><span class="value">${f1(st.zach)}<small>т</small></span><span class="foot">физический вес ${f1(st.netto)} т · ${st.count} машин</span></div>
+    <div class="kpi"><span class="label">На площадке</span><span class="value">${st.queue}<small>машин</small></span><span class="foot">${st.queue? 'дольше всех ждёт '+dur(st.longest):'очереди нет'}</span></div>
+    <div class="kpi"><span class="label">Время на заводе</span><span class="value">${Math.round(st.stay)}<small>мин</small></span><span class="foot">от въезда до тары, среднее</span></div>
+    <div class="kpi"><span class="label">Скидка на влагу и сор</span><span class="value">${f1(st.disc)}<small>%</small></span><span class="foot">масличность в среднем ${f1(st.oil)}%</span></div>
+  </div>`;
+}
+function alertsHtml(){
+  const a=alerts(); if(!a.length) return '<div class="empty">Всё в норме</div>';
+  return `<div class="alerts">${a.map(x=>`<div class="alert ${x.lvl}"><span class="ic">${x.icon}</span><div><div class="t">${x.t}</div><div class="s">${x.s}</div></div>${x.act?`<button class="btn btn-sm" data-act="invite" data-id="${x.act}">Пригласить</button>`:x.go?`<button class="btn btn-sm" data-act="page" data-page="${x.go}">Открыть</button>`:''}</div>`).join('')}</div>`;
+}
+function pageDashboard(){
+  return `<div class="page-head"><div><h1>Сводка смены</h1><div class="sub">Пн, 28 сентября · 14:20 · подсолнечник, сезон 2026</div></div>
+    <div class="actions"><button class="btn" data-act="page" data-page="queue">${I.truck}Очередь</button><button class="btn btn-primary" data-act="page" data-page="journal">${I.list}Журнал приёмки</button></div></div>
+    ${kpis()}
+    <div class="grid-2">
+      <div class="panel"><h2>Принято по часам, т зачётного веса <span class="muted">текущий час выделен</span></h2>${chart(false)}</div>
+      <div class="panel"><h2>Требует внимания</h2>${alertsHtml()}</div>
+    </div>
+    <div class="panel"><h2>Сейчас на площадке <span class="muted">по времени приезда</span></h2>${queueList(true)}</div>`;
+}
+function queueList(withBtn){
+  const q=waiting(); if(!q.length) return '<div class="empty">На площадке никого нет</div>';
+  return `<div class="list">${q.map((x,i)=>{const m=S.now-x.arrivedAt; const lvl=m>=90?'crit':m>=45?'warn':'ok';
+    return `<div class="it"><span class="mono" style="width:22px;color:var(--muted)">${i+1}</span>${plate(x)}<div class="grow"><b>${esc(x.supplier)}</b><span>приехал в ${hm(x.arrivedAt)}</span></div><span class="pill ${lvl}">${dur(m)}</span>${withBtn?`<button class="btn btn-sm" data-act="invite" data-id="${x.id}">На весовую</button>`:''}</div>`}).join('')}</div>`;
+}
+function tripCard(x){
+  const isMe = x.id===S.driverId;
+  let body='', btn='';
+  if(x.status==='booked'){ body=`<span class="meta">Запись на ${hm(x.slot)}</span>`; btn=`<button class="btn btn-sm" data-act="arrive" data-id="${x.id}">Отметить въезд</button>`; }
+  if(x.status==='arrived'){ const m=S.now-x.arrivedAt; body=`<span class="meta">Ждёт ${dur(m)} · с ${hm(x.arrivedAt)}</span>`; btn=`<button class="btn btn-sm btn-primary" data-act="invite" data-id="${x.id}">Пригласить на весовую</button>`; }
+  if(x.status==='weigh'){ body=`<span class="meta">${x.gross==null?'Ожидает взвешивания брутто':x.w==null?'Брутто '+f1(x.gross)+' т · ждёт анализ':'Анализ готов'}</span>`; }
+  if(x.status==='unload'){ body=`<span class="meta">Брутто ${f1(x.gross)} т · влажн. ${f1(x.w)}% · сор ${f1(x.s)}%</span>`; }
+  if(x.status==='done'){ const c=calc(x); body=`<span class="meta">${hm(x.finishedAt)} · зачёт <b style="color:var(--ink)">${f1(c.zach)} т</b></span>`; }
+  const click = (x.status==='weigh'||x.status==='unload'||x.status==='done') ? ` clickable" data-act="open" data-id="${x.id}" tabindex="0` : '';
+  return `<div class="card${isMe?' me':''}${click}"><div class="row">${plate(x)}${isMe?'<span class="pill info">у водителя демо</span>':''}</div><div class="sup">${esc(x.supplier)}</div>${body}${btn}</div>`;
+}
+function pageQueue(){
+  const cols=[['booked','Записаны','var(--info)'],['arrived','На площадке','var(--warn)'],['weigh','Весовая и лаборатория','var(--accent)'],['unload','Выгрузка','var(--ok)'],['done','Завершены сегодня','var(--faint)']];
+  return `<div class="page-head"><div><h1>Очередь машин</h1><div class="sub">Весовая №1 · нажмите на машину в работе, чтобы открыть рейс</div></div>
+    <div class="actions"><button class="btn btn-primary" data-act="next">${I.bell}Пригласить следующую</button></div></div>
+    <div class="board">${cols.map(([st,name,c])=>{let list=byStatus(st); if(st==='done') list=list.sort((a,b)=>b.finishedAt-a.finishedAt);
+      const shown = st==='done'? list.slice(0,4): list;
+      return `<section class="col"><div class="col-head"><span class="sw" style="background:${c}"></span>${name}<span class="c">${list.length}</span></div>${shown.length?shown.map(tripCard).join(''):'<div class="empty">Пусто</div>'}${st==='done'&&list.length>4?`<button class="btn btn-sm" data-act="page" data-page="journal">Весь журнал · ${list.length}</button>`:''}</section>`}).join('')}</div>`;
+}
+function pageJournal(){
+  let d=done().sort((a,b)=>b.finishedAt-a.finishedAt);
+  if(S.filter==='wet') d=d.filter(x=>x.w>=9);
+  if(S.filter==='sdiz') d=d.filter(x=>x.sdiz==='pending');
+  const st=stats();
+  return `<div class="page-head"><div><h1>Журнал приёмки</h1><div class="sub">${st.count} рейсов · ${f1(st.netto)} т физ. · ${f1(st.zach)} т зачёт</div></div>
+    <div class="actions"><button class="btn" data-act="export">${I.upload}Выгрузить в 1С</button></div></div>
+    <div class="filters" role="group" aria-label="Фильтр">${[['all','Все'],['wet','Влажность от 9%'],['sdiz','СДИЗ не погашен']].map(([k,n])=>`<button class="chip" data-act="filter" data-f="${k}" aria-pressed="${S.filter===k}">${n}</button>`).join('')}</div>
+    <div class="table-wrap"><table><thead><tr><th>Время</th><th>Машина</th><th>Поставщик</th><th class="r">Нетто, т</th><th class="r">Влажн., %</th><th class="r">Сор, %</th><th class="r">Масличн., %</th><th class="r">Зачёт, т</th><th>СДИЗ</th><th></th></tr></thead><tbody>
+    ${d.map(x=>{const c=calc(x); return `<tr><td class="num">${hm(x.finishedAt)}</td><td>${plate(x)}</td><td>${esc(x.supplier)}</td><td class="r num">${f2(c.netto)}</td><td class="r num"${x.w>=10?' style="color:var(--warn);font-weight:600"':''}>${f1(x.w)}</td><td class="r num">${f1(x.s)}</td><td class="r num">${f1(x.oil)}</td><td class="r num"><b>${f2(c.zach)}</b></td><td>${x.sdiz==='redeemed'?`<span class="pill ok">№ …${x.sdizNo} погашен</span>`:`<button class="btn btn-sm" data-act="sdiz" data-id="${x.id}">Погасить …${x.sdizNo}</button>`}</td><td><button class="btn btn-sm" data-act="open" data-id="${x.id}">Акт</button></td></tr>`}).join('') || '<tr><td colspan="10" class="empty">Нет рейсов по фильтру</td></tr>'}
+    </tbody></table></div>`;
+}
+function supplierRows(){
+  return SUP.map(n=>{
+    const d=done().filter(x=>x.supplier===n); let z=0,w=0,s=0,o=0; d.forEach(x=>{z+=calc(x).zach; w+=x.w; s+=x.s; o+=x.oil;});
+    const k=d.length||1; const [sc,sz]=SEASON_BEFORE[n];
+    const aw=w/k, as=s/k; const q = !d.length? 'neutral' : (aw>=9.5||as>=2.5)?'warn':'ok';
+    return {n, today:d.length, z, seasonCars:sc+d.length, seasonZ:sz+z, aw:d.length?aw:null, as:d.length?as:null, ao:d.length?o/k:null, q};
+  });
+}
+function pageSuppliers(){
+  const rows=supplierRows();
+  return `<div class="page-head"><div><h1>Поставщики</h1><div class="sub">Качество и объёмы сезона · расчёты ведутся по зачётному весу</div></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Поставщик</th><th class="r">Машин сегодня</th><th class="r">Зачёт сегодня, т</th><th class="r">Машин за сезон</th><th class="r">Зачёт за сезон, т</th><th class="r">Влажн., %</th><th class="r">Сор, %</th><th class="r">Масличн., %</th><th>Качество</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td><b>${esc(r.n)}</b></td><td class="r num">${r.today}</td><td class="r num">${f1(r.z)}</td><td class="r num">${r.seasonCars}</td><td class="r num">${f1(r.seasonZ)}</td><td class="r num">${f1(r.aw)}</td><td class="r num">${f1(r.as)}</td><td class="r num">${f1(r.ao)}</td><td>${r.q==='ok'?'<span class="pill ok">в норме</span>':r.q==='warn'?'<span class="pill warn">влажно / сорно</span>':'<span class="pill neutral">нет поставок</span>'}</td></tr>`).join('')}
+  </tbody></table></div>
+  <div class="panel"><h2>Кабинет поставщика <span class="pill neutral">следующая версия</span></h2><p style="margin:0;color:var(--muted);max-width:70ch">Каждое хозяйство видит свои машины, анализы и зачётный вес по каждой поставке и сверяет расчёты без звонков на завод.</p></div>`;
+}
+function pageSettings(){
+  return `<div class="page-head"><div><h1>Культуры и базис</h1><div class="sub">Базисные показатели задаются в договоре с поставщиком. Новая культура добавляется настройкой, без доработки программы.</div></div></div>
+  <div class="settings-grid">${Object.entries(CULT).map(([k,c])=>`<div class="cult"><h3>${c.name} ${c.active?'<span class="pill ok">идёт приёмка</span>':'<span class="pill neutral">вне сезона</span>'}</h3><span class="season">Сезон: ${c.season}</span>
+    <div class="kv"><span>Базисная влажность</span><b class="num">${c.wb}%</b><span>Базисная сорная примесь</span><b class="num">${c.sb}%</b><span>Доп. показатель</span><b>${c.extra}</b></div></div>`).join('')}</div>
+  <div class="panel"><h2>Как считается зачётный вес</h2><p style="margin:0 0 6px;color:var(--muted);max-width:75ch">Из физического веса сначала вычитается сорная примесь сверх базиса, затем влага сверх базиса. Скидка = (факт − базис) × 100 / (100 − базис).</p>
+  <p style="margin:0;color:var(--muted);max-width:75ch">Пример: нетто 24,5 т, влажность 9,6%, сор 2,8% → скидка на сор 1,82%, на влагу 2,80% → зачётный вес 23,39 т.</p></div>`;
+}
+function drawer(){
+  const x=S.trips.find(k=>k.id===S.drawer); if(!x) return '';
+  const c=calc(x); const fin=x.status==='done';
+  const s1 = x.gross!=null, s2 = x.w!=null&&x.s!=null&&x.oil!=null, s3 = x.status==='unload'||fin, s4 = x.tare!=null;
+  const reading = S.reading && S.reading.id===x.id;
+  const scale=(kind,val)=>`<div class="scale"><div><div class="lbl">Весы №1 · ${kind==='gross'?'брутто':'тара'}</div><div class="disp" id="scale-disp">${reading&&S.reading.kind===kind?'··,···':val!=null?f2(val):'00,000'}<small>т</small></div></div>${val==null&&!fin?`<button class="btn btn-primary btn-sm" data-act="read" data-kind="${kind}" data-id="${x.id}" ${reading?'disabled':''}>${I.scale}Снять вес</button>`:`<span class="pill ok">${I.check.replace('<svg','<svg width="12" height="12"')}записано</span>`}</div>`;
+  return `<div class="scrim" data-act="close"></div><aside class="drawer" role="dialog" aria-label="Рейс ${esc(x.plate)}">
+    <div class="drawer-head"><div class="top">${plate(x,true)}<span class="pill ${fin?'ok':'info'}">${fin?'Завершён '+hm(x.finishedAt):x.status==='unload'?'На выгрузке':'На весовой'}</span><button class="close" data-act="close" aria-label="Закрыть">${I.x}</button></div>
+    <div class="kv"><span>Поставщик</span><b>${esc(x.supplier)}</b><span>Культура</span><b>${CULT[x.culture].name}</b><span>Приехал</span><b class="num">${hm(x.arrivedAt)} · на заводе ${dur((fin?x.finishedAt:S.now)-x.arrivedAt)}</b><span>СДИЗ</span><b>№ …${x.sdizNo} ${x.sdiz==='redeemed'?'· погашен':'· ждёт погашения'}</b></div></div>
+    <div class="drawer-body">
+      <div class="step ${s1?'done':''}"><div class="step-h"><span class="n">1</span>Взвешивание брутто</div>${scale('gross',x.gross)}</div>
+      <div class="step ${s2&&s3?'done':''} ${!s1?'locked':''}"><div class="step-h"><span class="n">2</span>Лаборатория<span class="right">${s2?'<span class="pill ok">анализ готов</span>':''}</span></div>
+        <div class="fields">
+          <div class="field"><label for="f-w">Влажность, %</label><input id="f-w" inputmode="decimal" data-field="w" value="${x.w??''}" placeholder="8,0" ${!s1||fin?'disabled':''}></div>
+          <div class="field"><label for="f-s">Сорная примесь, %</label><input id="f-s" inputmode="decimal" data-field="s" value="${x.s??''}" placeholder="1,5" ${!s1||fin?'disabled':''}></div>
+          <div class="field"><label for="f-o">Масличность, %</label><input id="f-o" inputmode="decimal" data-field="oil" value="${x.oil??''}" placeholder="49,0" ${!s1||fin?'disabled':''}></div>
+        </div>
+        ${x.status==='weigh'?`<button class="btn btn-dark" data-act="tounload" data-id="${x.id}" ${!s1||!s2?'disabled':''} id="btn-unload">Отправить на выгрузку · яма №2</button>`:''}
+      </div>
+      <div class="step ${s4?'done':''} ${!s3?'locked':''}"><div class="step-h"><span class="n">3</span>Выгрузка и тара</div>${s3?scale('tare',x.tare):'<div class="empty">Станет доступно после выгрузки</div>'}</div>
+      <div class="calc" id="calc">${calcHtml(x)}</div>
+      ${!fin&&x.status==='unload'?`<button class="btn btn-primary" style="justify-content:center;padding:12px" data-act="finish" data-id="${x.id}" ${!s4?'disabled':''}>${I.check}Завершить рейс и отправить акт водителю</button>`:''}
+      ${fin?`<button class="btn" data-act="act" data-id="${x.id}">${I.doc}Акт приёмки для поставщика</button>`:''}
+    </div></aside>`;
+}
+function calcHtml(x){
+  const c=calc(x);
+  return `<div class="line"><span>Нетто (брутто − тара)</span><b class="num">${c.netto!=null?f2(c.netto)+' т':'после тары'}</b></div>
+    <div class="line"><span>Скидка на сорную примесь (базис ${c.c.sb}%)</span><b class="num">${c.sd!=null?f2(c.sd)+'%':'—'}</b></div>
+    <div class="line"><span>Скидка на влажность (базис ${c.c.wb}%)</span><b class="num">${c.wd!=null?f2(c.wd)+'%':'—'}</b></div>
+    <div class="total"><span>Зачётный вес</span><b class="num">${c.zach!=null?f2(c.zach)+' т':'—'}</b></div>
+    <div class="formula">${c.zach!=null?`Физический вес ${f2(c.netto)} т → к оплате ${f2(c.zach)} т. Разница ${f2(c.netto-c.zach)} т — вода и сор сверх базиса.`:'Считается автоматически, как только есть тара и анализ.'}</div>`;
+}
+function desktop(){
+  const st=stats();
+  const nav=[['dashboard','Сводка',I.grid],['queue','Очередь',I.truck,st.queue],['journal','Журнал приёмки',I.list],['suppliers','Поставщики',I.users],['settings','Культуры и базис',I.sliders]];
+  const pages={dashboard:pageDashboard,queue:pageQueue,journal:pageJournal,suppliers:pageSuppliers,settings:pageSettings};
+  return `<div class="app"><aside class="side"><div class="side-plant"><b>Маслозавод «Пример»</b><span>Весовая №1 · смена А</span></div>
+    <nav class="nav" aria-label="Разделы">${nav.map(([k,n,ic,cnt])=>`<button data-act="page" data-page="${k}" ${S.page===k?'aria-current="page"':''}>${ic}${n}${cnt?`<span class="count">${cnt}</span>`:''}</button>`).join('')}</nav>
+    <div class="side-foot"><span><span class="dot"></span>Весы на связи</span><span>Обмен с 1С: 13:30</span><span>Приёмщик: смена А</span></div></aside>
+    <main class="main">${pages[S.page]()}</main></div>${S.drawer?drawer():''}`;
+}
+
+/* ---------- phone: owner ---------- */
+function sbar(){return `<div class="sbar"><span class="num">14:20</span><span class="isl"></span><span class="icons">${I.signal}${I.batt}</span></div>`}
+function owner(){
+  const st=stats(); let body='';
+  if(S.ownerTab==='summary'){
+    body=`<div class="p-head"><div><h1>Сегодня</h1><div class="sub">Маслозавод «Пример» · 14:20</div></div><span class="av">СВ</span></div>
+    <div class="p-kpis"><div class="kpi hl"><span class="label">Принято, зачёт</span><span class="value">${f1(st.zach)}<small>т</small></span><span class="foot">${st.count} машин</span></div>
+    <div class="kpi"><span class="label">На площадке</span><span class="value">${st.queue}</span><span class="foot">${st.queue?'макс. '+dur(st.longest):'пусто'}</span></div>
+    <div class="kpi"><span class="label">На заводе</span><span class="value">${Math.round(st.stay)}<small>мин</small></span><span class="foot">среднее время</span></div>
+    <div class="kpi"><span class="label">Скидка</span><span class="value">${f1(st.disc)}<small>%</small></span><span class="foot">влага и сор</span></div></div>
+    <div class="p-card"><h2 style="margin:0 0 8px;font-size:14px">Приёмка по часам, т</h2>${chart(true)}</div>
+    <div class="p-card"><h2 style="margin:0 0 10px;font-size:14px">Требует внимания</h2>${alertsHtml()}</div>`;
+  } else if(S.ownerTab==='queue'){
+    body=`<div class="p-head"><div><h1>Очередь</h1><div class="sub">${st.queue} на площадке · ${st.inWork} в работе · ${st.booked} записаны</div></div></div>
+    <div class="p-card">${queueList(false)}</div>
+    <div class="p-card"><h2 style="margin:0 0 6px;font-size:14px">В работе</h2><div class="list">${[...byStatus('weigh'),...byStatus('unload')].map(x=>`<div class="it">${plate(x)}<div class="grow"><b>${esc(x.supplier)}</b><span>${x.status==='weigh'?'весовая и лаборатория':'выгрузка'}</span></div></div>`).join('')||'<div class="empty">Никого</div>'}</div></div>
+    <div class="p-card"><h2 style="margin:0 0 6px;font-size:14px">Записаны на сегодня</h2><div class="list">${byStatus('booked').map(x=>`<div class="it">${plate(x)}<div class="grow"><b>${esc(x.supplier)}</b><span>запись на ${hm(x.slot)}</span></div></div>`).join('')||'<div class="empty">Записей нет</div>'}</div></div>`;
+  } else {
+    const rows=supplierRows();
+    body=`<div class="p-head"><div><h1>Поставщики</h1><div class="sub">Сезон 2026 · подсолнечник</div></div></div>
+    <div class="p-card"><div class="list">${rows.map(r=>`<div class="it"><div class="grow"><b>${esc(r.n)}</b><span>сезон ${f1(r.seasonZ)} т · ${r.seasonCars} машин${r.aw!=null?' · влажн. '+f1(r.aw)+'%':''}</span></div>${r.q==='ok'?'<span class="pill ok">норма</span>':r.q==='warn'?'<span class="pill warn">влажно</span>':'<span class="pill neutral">—</span>'}</div>`).join('')}</div></div>`;
+  }
+  return `<div class="phone"><div class="phone-screen">${sbar()}<div class="p-body">${body}</div>
+    <nav class="tabbar" aria-label="Разделы">${[['summary','Сводка',I.home],['queue','Очередь',I.truck],['sup','Поставщики',I.users]].map(([k,n,ic])=>`<button data-act="otab" data-tab="${k}" ${S.ownerTab===k?'aria-current="page"':''}>${ic}${n}</button>`).join('')}</nav></div></div>`;
+}
+
+/* ---------- phone: driver ---------- */
+function driverMy(){
+  const x=S.trips.find(k=>k.id===S.driverId);
+  const steps=[['booked','Запись на выгрузку'],['arrived','На площадке, ждёте вызова'],['weigh','Весовая и проба'],['unload','Выгрузка'],['done','Приёмка завершена']];
+  const idx=x.status==='future'?0:steps.findIndex(s=>s[0]===x.status);
+  let hero='';
+  if(x.status==='future') hero=`<div class="cap">Запись на ${x._bookDay===1?'завтра, 29.09':'среду, 30.09'}</div><div class="big num">${hm(x.slot)}</div><h2>Накануне пришлём напоминание. В день приезда нажмите «Я на месте» у ворот.</h2>`;
+  if(x.status==='booked') hero=`<div class="cap">Ваша запись</div><div class="big num">${hm(x.slot)}</div><h2>Приезжайте к этому времени. Когда въедете на территорию, нажмите «Я на месте».</h2>`;
+  if(x.status==='arrived'){ const pos=waiting().findIndex(k=>k.id===x.id)+1; hero=`<div class="cap">Место в очереди</div><div class="big num">${pos}</div><h2>Примерно через ${dur(pos*18)} позовём на весовую. Пришлём уведомление.</h2>`; }
+  if(x.status==='weigh') hero=`<div class="cap">Ваша очередь</div><h2 style="font-size:22px">Проезжайте на весовую №1</h2><div class="cap">Затем пробоотборник возьмёт пробу из кузова.</div>`;
+  if(x.status==='unload') hero=`<div class="cap">Анализ готов</div><h2 style="font-size:22px">Выгрузка: завальная яма №2</h2><div class="cap">После выгрузки вернитесь на весовую для взвешивания тары.</div>`;
+  if(x.status==='done'){ const c=calc(x); hero=`<div class="cap">Зачётный вес</div><div class="big num">${f2(c.zach)}<span style="font-size:18px;color:var(--side-muted)"> т</span></div><h2>Приёмка завершена в ${hm(x.finishedAt)}. Акт отправлен в хозяйство.</h2>`; }
+  const res = (x.gross!=null||x.w!=null) ? (()=>{const c=calc(x); return `<div class="p-card"><h2 style="margin:0 0 10px;font-size:14px">Результаты</h2><div class="kv">
+    <span>Брутто</span><b class="num">${x.gross!=null?f2(x.gross)+' т':'—'}</b><span>Тара</span><b class="num">${x.tare!=null?f2(x.tare)+' т':'—'}</b>
+    <span>Влажность</span><b class="num">${x.w!=null?f1(x.w)+'%':'—'}</b><span>Сорная примесь</span><b class="num">${x.s!=null?f1(x.s)+'%':'—'}</b>
+    <span>Масличность</span><b class="num">${x.oil!=null?f1(x.oil)+'%':'—'}</b><span>Нетто</span><b class="num">${c.netto!=null?f2(c.netto)+' т':'—'}</b><span>Зачётный вес</span><b class="num">${c.zach!=null?f2(c.zach)+' т':'—'}</b></div></div>`})() : '';
+  return `<div class="p-head"><div><h1>Моя машина</h1><div class="sub">Приёмка семечки · Маслозавод «Пример»</div></div></div>
+    <div class="p-card" style="display:flex;align-items:center;gap:12px">${plate(x,true)}<div style="min-width:0"><b style="display:block;font-size:13px">${esc(x.supplier)}</b><span style="font-size:12px;color:var(--muted)">подсолнечник</span></div></div>
+    <div class="hero-status">${hero}</div>
+    ${x.status==='booked'?`<button class="p-btn" data-act="arrive" data-id="${x.id}">Я на месте</button>`:''}
+    <div class="p-card"><div class="timeline">${steps.map((s,i)=>`<div class="tl ${i<idx?'done':i===idx?'cur':''}"><span class="d"></span><div><b>${s[1]}</b>${i===idx&&x.status!=='done'?'<span>сейчас</span>':''}</div></div>`).join('')}</div></div>
+    ${res}
+    ${x.status==='done'?`<button class="p-btn ghost" data-act="dtab" data-tab="book">Записаться на следующий рейс</button>`:''}`;
+}
+function slotsFor(day){
+  const base=[t(8,0),t(9,20),t(10,40),t(12,0),t(13,20),t(14,40),t(16,0),t(17,20),t(18,40)];
+  return base.map((m,i)=>{ let left = day===0 ? (m<=S.now? 0 : [0,0,0,0,0,1,2,3,3][i]) : day===1 ? [1,0,2,3,1,3,2,3,3][i] : [3,3,2,3,3,3,3,3,3][i];
+    const taken = S.trips.some(k=>k._bookDay===day && k.slot===m); if(taken) left=Math.max(0,left-1); return {m,left}; });
+}
+function driverBook(){
+  const b=S.booking; const days=['Сегодня, 28.09','Завтра, 29.09','Ср, 30.09'];
+  const slots=slotsFor(b.day);
+  return `<div class="p-head"><div><h1>Запись на выгрузку</h1><div class="sub">Приезжайте к своему времени, без ожидания у ворот</div></div></div>
+    <div class="p-card" style="display:grid;gap:12px">
+      <div class="p-field"><label for="b-sup">Хозяйство</label><select id="b-sup" data-bfield="supplier">${SUP.map(s=>`<option ${s===b.supplier?'selected':''}>${esc(s)}</option>`).join('')}</select></div>
+      <div style="display:grid;grid-template-columns:1fr 90px;gap:8px"><div class="p-field"><label for="b-plate">Госномер</label><input id="b-plate" data-bfield="plate" placeholder="А 123 ВС" value="${esc(b.plate)}" autocomplete="off"></div>
+      <div class="p-field"><label for="b-reg">Регион</label><input id="b-reg" data-bfield="region" inputmode="numeric" value="${esc(b.region)}"></div></div>
+    </div>
+    <div class="filters" role="group" aria-label="День">${days.map((d,i)=>`<button class="chip" data-act="bday" data-day="${i}" aria-pressed="${b.day===i}">${d}</button>`).join('')}</div>
+    <div class="slots">${slots.map(s=>`<button class="slot ${s.left===0?'full':s.left===1?'busy':''}" data-act="bslot" data-m="${s.m}" ${s.left===0?'disabled':''} aria-pressed="${b.slot===s.m}"><b>${hm(s.m)}</b><span>${s.left===0?'занято':s.left===1?'1 место':'свободно'}</span></button>`).join('')}</div>
+    <button class="p-btn" data-act="book" ${b.slot==null?'disabled style="opacity:.5"':''}>Записаться${b.slot!=null?' на '+hm(b.slot):''}</button>
+    <div style="font-size:12px;color:var(--muted);text-align:center">Уведомления о вызове придут в Telegram или по SMS</div>`;
+}
+function driver(){
+  return `<div class="phone"><div class="phone-screen">${sbar()}<div class="p-body">${S.driverTab==='my'?driverMy():driverBook()}</div>
+    <nav class="tabbar two" aria-label="Разделы">${[['my','Моя машина',I.truck],['book','Запись',I.cal]].map(([k,n,ic])=>`<button data-act="dtab" data-tab="${k}" ${S.driverTab===k?'aria-current="page"':''}>${ic}${n}</button>`).join('')}</nav></div></div>`;
+}
+function phoneStage(){
+  const isOwner=S.mode==='owner';
+  const note = isOwner ? `<div class="side-note"><h3>Телефон собственника</h3><p>Картина смены без звонков на весовую: сколько принято, кто стоит в очереди, где теряются деньги на влаге и соре.</p><ol><li>Нажмите <b>«Пригласить»</b> у машины, которая ждёт больше 90 минут.</li><li>Откройте вкладку <b>«Очередь»</b>: машина перешла в работу.</li><li>Переключитесь на <b>«Рабочее место»</b> и завершите её рейс. Цифры сводки обновятся.</li></ol></div>`
+   : `<div class="side-note"><h3>Телефон водителя</h3><p>Водитель видит место в очереди и результат анализа. Меньше звонков «когда разгружаться» и споров о весе.</p><ol><li>Перейдите в <b>«Рабочее место»</b> и нажмите <b>«Пригласить следующую»</b> несколько раз, пока не дойдёт очередь машины К 482 МР.</li><li>Вернитесь сюда: статус сменился на «Проезжайте на весовую».</li><li>Во вкладке <b>«Запись»</b> запишите новую машину. Она появится в очереди у приёмщика.</li></ol></div>`;
+  return `<div class="phone-stage">${isOwner?owner():driver()}${note}</div>`;
+}
+
+/* ---------- shell ---------- */
+function render(){
+  const modes=[['desktop','Рабочее место',I.desk],['owner','Собственник',I.phone],['driver','Водитель',I.phone]];
+  const hint = S.mode==='desktop'
+    ? `<span>${I.seed.replace('<svg','<svg width="16" height="16"')}</span><span><b>Демо на вымышленных данных.</b> Откройте «Очередь», пригласите машину на весовую и проведите рейс: снимите вес, внесите анализ, отправьте на выгрузку, снимите тару. Зачётный вес посчитается сам.</span>`
+    : `<span>${I.seed.replace('<svg','<svg width="16" height="16"')}</span><span><b>Демо на вымышленных данных.</b> Все три экрана работают с одними данными: действие на одном сразу видно на других.</span>`;
+  document.getElementById('app').innerHTML = `<header class="topbar"><div class="brand"><span class="brand-mark">${I.seed.replace('stroke="currentColor"','stroke="#2A1F00"')}</span><span class="brand-name">Приёмка</span></div><span class="demo-badge">демо</span>
+    <div class="seg" role="group" aria-label="Режим показа">${modes.map(([k,n,ic])=>`<button data-act="mode" data-mode="${k}" aria-pressed="${S.mode===k}">${ic}${n}</button>`).join('')}</div></header>
+    <p class="hint">${hint}</p>
+    ${S.mode==='desktop'?desktop():phoneStage()}`;
+}
+
+/* ---------- actions ---------- */
+function invite(id){
+  const x=S.trips.find(k=>k.id===id); if(!x||x.status!=='arrived') return;
+  x.status='weigh'; if(x._gross==null) x._gross=36+Math.round(Math.random()*60)/10;
+  toast(`Водителю <b>${x.plate.slice(0,1)} ${x.plate.slice(1,4)} ${x.plate.slice(4)}</b> отправлено: «Проезжайте на весовую №1»`);
+}
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]'); if(!el||el.disabled) return;
+  const a=el.dataset.act, id=+el.dataset.id;
+  const x = id ? S.trips.find(k=>k.id===id) : null;
+  switch(a){
+    case 'mode': S.mode=el.dataset.mode; S.drawer=null; break;
+    case 'page': S.page=el.dataset.page; S.drawer=null; if(S.mode!=='desktop') S.mode='desktop'; break;
+    case 'otab': S.ownerTab=el.dataset.tab; break;
+    case 'dtab': S.driverTab=el.dataset.tab; break;
+    case 'filter': S.filter=el.dataset.f; break;
+    case 'invite': invite(id); break;
+    case 'next': { const q=waiting(); if(q.length) invite(q[0].id); else toast('На площадке никого нет'); break; }
+    case 'arrive': x.status='arrived'; x.arrivedAt=S.now; if(x._gross==null){x._gross=36+Math.round(Math.random()*60)/10;} toast(`${x.plate.slice(0,1)} ${x.plate.slice(1,4)} ${x.plate.slice(4)} на площадке, место в очереди ${waiting().findIndex(k=>k.id===x.id)+1}`); break;
+    case 'open': S.drawer=id; break;
+    case 'close': S.drawer=null; break;
+    case 'read': {
+      const kind=el.dataset.kind; S.reading={id,kind}; render();
+      const disp=document.getElementById('scale-disp'); let n=0;
+      const target = kind==='gross' ? (x._gross ?? 39.5) : (x._tare ?? (14.2+Math.round(Math.random()*16)/10));
+      const iv=setInterval(()=>{ n++; if(disp) disp.firstChild.nodeValue = f2(target + (Math.random()-.5)*(1.2/n)); if(n>=8){ clearInterval(iv); x[kind]=target; S.reading=null; render(); } },110);
+      return;
+    }
+    case 'tounload': x.status='unload'; if(x._tare==null) x._tare=14.2+Math.round(Math.random()*16)/10; toast('Водителю отправлено: «Выгрузка: завальная яма №2»'); break;
+    case 'finish': { x.status='done'; x.finishedAt=S.now; S.now+=2; const c=calc(x); toast(`Рейс завершён. Зачётный вес <b>${f2(c.zach)} т</b>. Акт отправлен водителю и в хозяйство.`); break; }
+    case 'sdiz': x.sdiz='redeemed'; toast(`СДИЗ …${x.sdizNo} отмечен погашенным. В рабочей версии — отправка во ФГИС «Зерно».`); break;
+    case 'export': { const st=stats(); toast(`Файл для 1С сформирован: ${st.count} рейсов, ${f1(st.zach)} т зачётного веса. В демо файл не скачивается.`); break; }
+    case 'act': toast('Акт приёмки сформирован. В рабочей версии уходит поставщику в кабинет и в 1С.'); break;
+    case 'bday': S.booking.day=+el.dataset.day; S.booking.slot=null; break;
+    case 'bslot': S.booking.slot=+el.dataset.m; break;
+    case 'book': {
+      const b=S.booking; const raw=b.plate.toUpperCase().replace(/\s/g,'');
+      const ok=/^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}$/.test(raw);
+      if(!ok){ toast('Проверьте госномер: буква, три цифры, две буквы. Например, А 123 ВС.'); return; }
+      if(b.slot==null) return;
+      const nt=trip({plate:raw,region:b.region||'93',supplier:b.supplier,status:b.day===0?'booked':'future',slot:b.slot,_bookDay:b.day});
+      S.trips.push(nt);
+      S.driverId=nt.id; S.driverTab='my';
+      toast(`Запись подтверждена: ${['сегодня','завтра','30.09'][b.day]} в ${hm(b.slot)}. ${b.day===0?'Машина появилась в очереди у приёмщика.':''}`);
+      S.booking={supplier:b.supplier,plate:'',region:b.region,day:b.day,slot:null};
+      break;
+    }
+    default: return;
+  }
+  render();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && S.drawer){ S.drawer=null; render(); }
+  if((e.key==='Enter'||e.key===' ') && e.target.matches('.card.clickable')){ e.preventDefault(); e.target.click(); }
+});
+document.addEventListener('input',e=>{
+  const f=e.target.dataset.field, bf=e.target.dataset.bfield;
+  if(f && S.drawer){
+    const x=S.trips.find(k=>k.id===S.drawer); const v=parseFloat(String(e.target.value).replace(',','.'));
+    x[f]= isNaN(v)? null : v;
+    const box=document.getElementById('calc'); if(box) box.innerHTML=calcHtml(x);
+    const btn=document.getElementById('btn-unload'); if(btn) btn.disabled = !(x.gross!=null && x.w!=null && x.s!=null && x.oil!=null);
+  }
+  if(bf){ S.booking[bf]=e.target.value; }
+});
+document.addEventListener('change',e=>{ if(e.target.dataset.bfield==='supplier'){ S.booking.supplier=e.target.value; } });
+render();
+})();
+</script>

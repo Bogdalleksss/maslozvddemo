@@ -1,0 +1,21 @@
+{
+  "name": "priemka-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Демо системы приёмки семечки: три приложения, SQLite, push-уведомления",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "reset": "node server/server.js --reset-only",
+    "icons": "node tools/make-icons.js",
+    "tunnel": "ngrok http 4321",
+    "set-api": "node tools/set-api.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "web-push": "^3.6.7"
+  }
+}

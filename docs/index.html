@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.ngrok-free.app https://*.ngrok-free.dev https://*.ngrok.app https://*.ngrok.io; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="theme-color" content="#F0F3EE">
+<title>Приёмка · демо</title>
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script src="shared/theme-init.js"></script>
+<link rel="stylesheet" href="shared/style.css">
+<style>
+.wrap{max-width:720px;margin:0 auto;padding:56px 20px 64px;display:grid;gap:28px}
+h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:12px}
+h1 .mark{width:38px;height:38px;border-radius:10px}h1 .mark svg{width:22px;height:22px}
+.lead{color:var(--muted);font-size:17px;margin:6px 0 0;max-width:52ch}
+.site{text-decoration:none;color:inherit}
+.site .main b{font-size:17px}
+.step-n{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.site .main span{font-size:14px}
+.url{font-size:13px;color:var(--accent)}
+.lan{font-size:14px;color:var(--muted)}
+.lan code{font-family:var(--mono);color:var(--ink);font-size:13.5px}
+.site .chev{font-size:22px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div><h1><span class="mark" id="mark"></span>Приёмка<button class="icon-btn" data-theme-toggle type="button" style="margin-left:auto"></button></h1>
+    <p class="lead">Демо системы приёмки семечки для маслозавода. Три приложения работают с общей базой: действие на компьютере сразу видно на телефоне, а на телефон приходят уведомления. Данные вымышленные.</p></div>
+  <div class="group"><div class="row"><div class="main" id="server"><b>Проверяем сервер…</b><span>Данные идут с компьютера, на котором запущено демо</span></div></div></div>
+  <div class="group">
+    <a class="row tap site" href="desk/"><div class="main"><b>Рабочее место</b><span>Весовая: очередь, ввод веса, анализ, журнал, базис, сотрудники. Для компьютера.</span></div><span class="chev">›</span></a>
+    <a class="row tap site" href="owner/"><div class="main"><b>Руководитель</b><span>Сводка смены и очередь в телефоне, уведомления о важном.</span></div><span class="chev">›</span></a>
+    <a class="row tap site" href="driver/"><div class="main"><b>Водитель</b><span>Запись на выгрузку, место в очереди, уведомление «ваша очередь».</span></div><span class="chev">›</span></a>
+  </div>
+  <div><p class="group-title">Как поставить на iPhone и получать уведомления</p><div class="group">
+    <div class="row"><span class="step-n">1</span><div class="main"><b>Откройте «Руководитель» или «Водитель» в Safari</b><span>Нужен iOS 16.4 или новее</span></div></div>
+    <div class="row"><span class="step-n">2</span><div class="main"><b>«Поделиться» → «На экран Домой»</b><span>На экране появится иконка приложения</span></div></div>
+    <div class="row"><span class="step-n">3</span><div class="main"><b>Откройте приложение с иконки и войдите</b><span>Водитель — по коду, который в демо показывается на экране</span></div></div>
+    <div class="row"><span class="step-n">4</span><div class="main"><b>Нажмите «Включить уведомления» и разрешите</b><span>Затем действия на компьютере будут приходить на телефон</span></div></div>
+  </div><p class="muted" style="font-size:13px;margin:10px 4px 0">На Android — Chrome → меню «⋮» → «Установить приложение».</p></div>
+  <div><p class="group-title">Демо-доступы</p><div class="group" id="demo"><div class="row"><div class="main muted">Появятся, когда сервер ответит</div></div></div>
+    <p class="muted" style="font-size:13px;margin:10px 4px 0">Сбросить демо к исходным данным может руководитель: Рабочее место → Сотрудники.</p></div>
+</main>
+<script src="shared/config.js"></script>
+<script src="shared/core.js"></script>
+<script src="launcher.js"></script>
+</body>
+</html>
